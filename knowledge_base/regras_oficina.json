@@ -1,0 +1,220 @@
+{
+  "sintomas_catalogo": {
+    "motor_nao_gira": "O motor não gira ao tentar dar partida?",
+    "luzes_fracas": "As luzes do painel estão fracas?",
+    "clique_ao_virar_chave": "Faz barulho de clique ao virar a chave?",
+    "motor_gira_bem": "O motor gira normalmente ao dar partida, mas não pega?",
+    "luz_injecao_acesa": "A luz da injeção eletrônica está acesa no painel?",
+    "cheiro_queimado": "Há cheiro de queimado no veículo?",
+    "fumaca_painel": "Saiu fumaça do painel?",
+    "radio_luz_apagou": "O rádio ou as luzes internas apagaram de repente?",
+    "bateria_nova_descarrega": "Uma bateria nova está descarregando rápido?",
+    "voltagem_abaixo_13_5": "A voltagem medida com o motor ligado está abaixo de 13.5V?",
+    "carro_engasgando": "O carro está engasgando durante a aceleração?",
+    "perda_potencia": "Há perda de potência no motor?",
+    "fumaca_azulada": "Está saindo fumaça levemente azulada pelo escapamento?",
+    "marcha_arranhando": "A marcha está arranhando para entrar?",
+    "pedal_embreagem_baixo": "O pedal da embreagem está muito baixo?",
+    "fumaca_branca_espessa": "Sai fumaça branca espessa pelo escapamento?",
+    "agua_abaixando": "O nível do reservatório de água está abaixando constantemente?",
+    "ruido_agudo_freio": "Há ruído metálico agudo (assobio) ao pisar no freio?",
+    "pedal_freio_esponjoso": "O pedal do freio está esponjoso (descendo quase até o assoalho)?",
+    "volante_trepidando_freio": "O volante trepida forte apenas ao frear em altas velocidades?",
+    "luz_abs_acesa": "A luz do ABS está acesa no painel?",
+    "derrapando_freada_brusca": "O carro derrapa em freadas bruscas mesmo com frenagem normal?",
+    "carro_puxando_lado": "O carro está puxando fortemente para um lado em linha reta?",
+    "ruido_seco_toc_toc": "Faz ruído seco ('toc-toc') ao passar em lombadas ou buracos?",
+    "volante_pesado": "O volante está muito pesado na hora de manobrar?",
+    "zumbido_direcao": "Há um zumbido vindo da direção hidráulica?",
+    "pneus_gastando_borda_interna": "Os pneus estão gastando de forma irregular apenas nas bordas internas?",
+    "ponteiro_temperatura_vermelho": "O ponteiro de temperatura está no vermelho?",
+    "ventoinha_nao_liga": "A ventoinha do radiador não está ligando?",
+    "poca_liquido_colorido": "Há poça de líquido colorido (rosa ou verde) debaixo do motor após estacionar?",
+    "ar_condicionado_so_venta": "O ar-condicionado só venta e não gela?",
+    "compressor_arma": "O compressor do ar-condicionado arma normalmente?",
+    "cheiro_doce_cabine": "Há um cheiro 'doce' forte dentro da cabine?",
+    "tapete_umido_frente": "O tapete da parte da frente está úmido?"
+  },
+  "regras": [
+    {
+      "id": "R01",
+      "sistema": "Elétrica & Ignição",
+      "sintomas": ["motor_nao_gira", "luzes_fracas", "clique_ao_virar_chave"],
+      "diagnostico": "Bateria descarregada ou fim de vida útil",
+      "solucao": "Testar carga da bateria, realizar recarga ou substituir a bateria.",
+      "especialista": "Eletricista Automotivo",
+      "confianca": 0.95
+    },
+    {
+      "id": "R02",
+      "sistema": "Elétrica & Ignição",
+      "sintomas": ["motor_gira_bem", "luz_injecao_acesa"],
+      "diagnostico": "Falha na bomba de combustível ou sensor de rotação",
+      "solucao": "Passar scanner OBD2, testar pressão da bomba de combustível e sinal do sensor de rotação.",
+      "especialista": "Especialista em Injeção Eletrônica",
+      "confianca": 0.85
+    },
+    {
+      "id": "R03",
+      "sistema": "Elétrica & Ignição",
+      "sintomas": ["cheiro_queimado", "fumaca_painel", "radio_luz_apagou"],
+      "diagnostico": "Curto-circuito no chicote elétrico ou fusível principal rompido",
+      "solucao": "Desligar a bateria imediatamente e inspecionar caixa de fusíveis e chicote do painel.",
+      "especialista": "Eletricista Automotivo",
+      "confianca": 0.92
+    },
+    {
+      "id": "R04",
+      "sistema": "Elétrica & Ignição",
+      "sintomas": ["bateria_nova_descarrega", "voltagem_abaixo_13_5"],
+      "diagnostico": "Falha no alternador (não está carregando a bateria)",
+      "solucao": "Revisar regulador de voltagem, escovas e correia do alternador.",
+      "especialista": "Eletricista Automotivo",
+      "confianca": 0.90
+    },
+    {
+      "id": "R05",
+      "sistema": "Motor & Câmbio",
+      "sintomas": ["carro_engasgando", "perda_potencia"],
+      "diagnostico": "Velas de ignição gastas ou cabos de vela com fuga de corrente",
+      "solucao": "Inspecionar e substituir jogo de velas, cabos de ignição ou bobina.",
+      "especialista": "Mecânico de Motor / Injeção",
+      "confianca": 0.85
+    },
+    {
+      "id": "R06",
+      "sistema": "Motor & Câmbio",
+      "sintomas": ["fumaca_azulada"],
+      "diagnostico": "Motor queimando óleo (anéis de segmento ou retentores de válvula)",
+      "solucao": "Realizar teste de compressão dos cilindros e avaliar retífica parcial ou completa.",
+      "especialista": "Mecânico de Motor",
+      "confianca": 0.88
+    },
+    {
+      "id": "R07",
+      "sistema": "Motor & Câmbio",
+      "sintomas": ["marcha_arranhando", "pedal_embreagem_baixo"],
+      "diagnostico": "Desgaste no kit de embreagem ou fluido do atuador baixo",
+      "solucao": "Verificar nível/vazamento do atuador hidráulico e inspecionar platô, disco e rolamento.",
+      "especialista": "Especialista em Câmbio e Transmissão",
+      "confianca": 0.87
+    },
+    {
+      "id": "R08",
+      "sistema": "Motor & Câmbio",
+      "sintomas": ["fumaca_branca_espessa", "agua_abaixando"],
+      "diagnostico": "Junta do cabeçote queimada (água vazando para os cilindros)",
+      "solucao": "Não rodar com o veículo; remover cabeçote para plaina e troca da junta.",
+      "especialista": "Mecânico de Motor",
+      "confianca": 0.93
+    },
+    {
+      "id": "R09",
+      "sistema": "Freios",
+      "sintomas": ["ruido_agudo_freio"],
+      "diagnostico": "Pastilhas de freio excessivamente gastas (atingiu o limitador)",
+      "solucao": "Substituir o jogo de pastilhas de freio e verificar estado dos discos.",
+      "especialista": "Especialista em Freios",
+      "confianca": 0.90
+    },
+    {
+      "id": "R10",
+      "sistema": "Freios",
+      "sintomas": ["pedal_freio_esponjoso"],
+      "diagnostico": "Ar no sistema hidráulico ou vazamento de fluido de freio",
+      "solucao": "Inspecionar mangueiras, cilindros e realizar sangria completa do fluido de freio.",
+      "especialista": "Especialista em Freios",
+      "confianca": 0.89
+    },
+    {
+      "id": "R11",
+      "sistema": "Freios",
+      "sintomas": ["volante_trepidando_freio"],
+      "diagnostico": "Discos de freio empenados (necessita passe ou troca)",
+      "solucao": "Medir empenamento com relógio comparador e substituir ou retificar discos.",
+      "especialista": "Especialista em Freios",
+      "confianca": 0.88
+    },
+    {
+      "id": "R12",
+      "sistema": "Freios",
+      "sintomas": ["luz_abs_acesa", "derrapando_freada_brusca"],
+      "diagnostico": "Sensor de velocidade de uma das rodas sujo ou cabo rompido",
+      "solucao": "Ler códigos de falha do módulo ABS e limpar/substituir o sensor da roda afetada.",
+      "especialista": "Eletricista / Especialista em Freios",
+      "confianca": 0.86
+    },
+    {
+      "id": "R13",
+      "sistema": "Suspensão & Direção",
+      "sintomas": ["carro_puxando_lado"],
+      "diagnostico": "Alinhamento desregulado ou pressão irregular dos pneus",
+      "solucao": "Calibrar os pneus e realizar alinhamento de direção (geometria).",
+      "especialista": "Especialista em Suspensão e Alinhamento",
+      "confianca": 0.88
+    },
+    {
+      "id": "R14",
+      "sistema": "Suspensão & Direção",
+      "sintomas": ["ruido_seco_toc_toc"],
+      "diagnostico": "Bieletas desgastadas, buchas da bandeja ou amortecedor estourado",
+      "solucao": "Elevar o veículo e checar folgas em bieletas, pivôs, buchas e amortecedores.",
+      "especialista": "Mecânico de Suspensão",
+      "confianca": 0.85
+    },
+    {
+      "id": "R15",
+      "sistema": "Suspensão & Direção",
+      "sintomas": ["volante_pesado", "zumbido_direcao"],
+      "diagnostico": "Baixo nível de fluido de direção ou bomba hidráulica danificada",
+      "solucao": "Completar fluido hidráulico, checar vazamentos e testar pressão da bomba.",
+      "especialista": "Especialista em Direção Hidráulica",
+      "confianca": 0.89
+    },
+    {
+      "id": "R16",
+      "sistema": "Suspensão & Direção",
+      "sintomas": ["pneus_gastando_borda_interna"],
+      "diagnostico": "Câmber negativo excessivo (necessário ajuste de cambagem)",
+      "solucao": "Realizar ajuste de cambagem e verificar componentes de suspensão.",
+      "especialista": "Especialista em Suspensão e Alinhamento",
+      "confianca": 0.90
+    },
+    {
+      "id": "R17",
+      "sistema": "Arrefecimento & Ar Cond.",
+      "sintomas": ["ponteiro_temperatura_vermelho", "ventoinha_nao_liga"],
+      "diagnostico": "Interruptor térmico ('cebolão') queimado ou relé da ventoinha com defeito",
+      "solucao": "Testar fusível, relé da ventoinha, sensor de temperatura e motor do eletroventilador.",
+      "especialista": "Mecânico de Arrefecimento / Eletricista",
+      "confianca": 0.91
+    },
+    {
+      "id": "R18",
+      "sistema": "Arrefecimento & Ar Cond.",
+      "sintomas": ["poca_liquido_colorido"],
+      "diagnostico": "Mangueira do radiador ressecada/furada ou selo do motor vazando",
+      "solucao": "Aplicar teste de pressão no sistema de arrefecimento para localizar o vazamento.",
+      "especialista": "Mecânico de Arrefecimento",
+      "confianca": 0.87
+    },
+    {
+      "id": "R19",
+      "sistema": "Arrefecimento & Ar Cond.",
+      "sintomas": ["ar_condicionado_so_venta", "compressor_arma"],
+      "diagnostico": "Vazamento de gás refrigerante no sistema",
+      "solucao": "Aplicar contraste UV para encontrar vazamento, reparar e recarregar gás refrigerante.",
+      "especialista": "Especialista em Ar-Condicionado Automotivo",
+      "confianca": 0.88
+    },
+    {
+      "id": "R20",
+      "sistema": "Arrefecimento & Ar Cond.",
+      "sintomas": ["cheiro_doce_cabine", "tapete_umido_frente"],
+      "diagnostico": "Vazamento no radiador do ar quente interno (painel)",
+      "solucao": "Inspecionar mangueiras e núcleo do radiador de ar quente sob o painel.",
+      "especialista": "Mecânico de Arrefecimento / Ar-Condicionado",
+      "confianca": 0.92
+    }
+  ]
+}
