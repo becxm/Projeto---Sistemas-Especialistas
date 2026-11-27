@@ -210,22 +210,6 @@ projeto-sistemas-especialistas/
 | **Sarah** | Interface e demonstração prática | Telas e interação pelo navegador (`templates/` e `static/`), mostrando uma triagem funcionando ao vivo. |
 | **Silvana** | Testes, documentação e limitações | Como os testes (`tests/`) validam o sistema, organização da documentação (`docs/`, `README.md`) e limitações/próximos passos. |
 
-#### Tópicos de Apresentação:
-- **Gustavo:** Introdução, problema de negócio e arquitetura
-  - *O que apresentar:* Contexto do sistema especialista para oficina mecânica, problema no balcão, visão geral da aplicação (`app.py`, `config.py`) e fluxo no Git.
-
-- **Iasmim:** Motor de inferência e lógica principal
-  - *O que apresentar:* Como funciona o encadeamento para frente, triagem interativa, incerteza e estrutura do `backend/`.
-
-- **Rebeca:** Base de conhecimento e dados
-  - *O que apresentar:* Regras e fatos em JSON (`data/`), como os sintomas viram diagnóstico e scripts de apoio/população (`scripts/`).
-
-- **Sarah:** Interface e demonstração prática
-  - *O que apresentar:* Telas e interação pelo navegador (`templates/` e `static/`), mostrando uma triagem funcionando ao vivo.
-
-- **Silvana:** Testes, documentação e limitações
-  - *O que apresentar:* Como os testes (`tests/`) validam o sistema, organização da documentação (`docs/`, `README.md`) e limitações/próximos passos.
-
 ### Boas Práticas no GitHub (Avaliado pelo Professor)
 1. **Commits pequenos, frequentes e semânticos:** O histórico comprova a evolução de cada módulo (padrão Conventional Commits: `feat`, `fix`, `test`, `docs`).
 2. **Branches por funcionalidade:** Crie sempre uma branch para sua tarefa (ex: `feature/api-motor`, `feature/ui-dashboard`, `feature/regras-freios`).
