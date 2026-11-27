@@ -2,7 +2,7 @@
 
 Projeto da disciplina **Programação de Sistemas Especialistas** (Prazo: 28/11/2026).
 O sistema realiza a triagem interativa de sintomas relatados por clientes de uma oficina mecânica, calcula probabilidades de falha, explica **por que/como** chegou ao diagnóstico e registra o histórico em banco de dados para alimentar um dashboard estatístico.
-> **Grupo:** IASMIM DA SILVA MANN JOSÉ - 1250109566, REBECA MACHADO DE LIMA - 1250103657, SARAH GABRIELLA VIRGÍNIA DA SILVA - 1250106978,  SILVANA GOMES DA SILVA - 1250109767.  
+> **Grupo:** GUSTAVO FERREIRA BALDOINO - 1250109373, IASMIM DA SILVA MANN JOSÉ - 1250109566, REBECA MACHADO DE LIMA - 1250103657, SARAH GABRIELLA VIRGÍNIA DA SILVA - 1250106978,  SILVANA GOMES DA SILVA - 1250109767.  
 
 ---
 
