@@ -176,3 +176,8 @@ projeto-sistemas-especialistas/
 | **Membro 3** | Exceções e Módulo de Explicação | `backend/explanation/` |
 | **Membro 4** | Interface Web e UX | `frontend/` |
 | **Membro 5** | Diferenciais, Qualidade e Docs | `backend/loaders/`, `scripts/`, `tests/`, `docs/`, `README.md` |
+
+### Boas Práticas no GitHub (Avaliado pelo Professor)
+1. **Commits pequenos, frequentes e semânticos:** O histórico comprova a evolução de cada módulo (padrão Conventional Commits: `feat`, `fix`, `test`, `docs`).
+2. **Branches por funcionalidade:** Crie sempre uma branch para sua tarefa (ex: `feature/api-motor`, `feature/ui-dashboard`, `feature/regras-freios`).
+3. **Pull Requests (PRs):** Revise as alterações e execute a suite de testes antes de mesclar na `main`.

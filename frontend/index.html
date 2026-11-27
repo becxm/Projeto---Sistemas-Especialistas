@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oficina Mecânica — Sistema Especialista</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Sistema Especialista Automotivo</h1>
+      <p class="subtitle">Triagem Inteligente, Diagnóstico e Módulo de Explicação</p>
+    </div>
+    <button id="btn-nova-triagem" class="btn btn-primary">Nova Triagem</button>
+  </header>
+
+  <main class="container">
+    <!-- Dashboard Inicial -->
+    <section class="card" id="dashboard-section">
+      <h2>Dashboard Operacional</h2>
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-box">
+          <span class="stat-label">Total de Diagnósticos</span>
+          <strong class="stat-value" id="stat-total">0</strong>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Sistema Mais Frequente</span>
+          <strong class="stat-value" id="stat-top-sistema">—</strong>
+        </div>
+      </div>
+      <h3>Histórico Recente</h3>
+      <ul class="history-list" id="history-list">
+        <li class="muted">Nenhum diagnóstico registrado ainda.</li>
+      </ul>
+    </section>
+
+    <!-- Triagem Interativa -->
+    <section class="card" id="triage-section">
+      <h2>Triagem Interativa</h2>
+      <p id="triage-question" class="question-text">
+        Clique em "Nova Triagem" para iniciar as perguntas encadeadas.
+      </p>
+      <div class="actions" id="triage-actions" hidden>
+        <button id="btn-sim" class="btn btn-success">Sim</button>
+        <button id="btn-nao" class="btn btn-secondary">Não</button>
+        <button id="btn-finalizar" class="btn btn-outline">Concluir Agora</button>
+      </div>
+      <div class="chips" id="confirmed-chips"></div>
+    </section>
+
+    <!-- Diagnóstico e Módulo de Explicação -->
+    <section class="card" id="result-section" hidden>
+      <h2>Resultado do Diagnóstico</h2>
+      <div id="result-badge" class="badge"></div>
+      <h3 id="result-diagnostico"></h3>
+      <p><strong>Solução Recomendada:</strong> <span id="result-solucao"></span></p>
+      <p><strong>Especialista Indicado:</strong> <span id="result-especialista"></span></p>
+
+      <div class="explanation-box">
+        <h4>Módulo de Explicação ("Por que / Como")</h4>
+        <p id="explanation-why"></p>
+        <ul id="explanation-rules"></ul>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
