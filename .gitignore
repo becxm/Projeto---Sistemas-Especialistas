@@ -1,26 +1,9 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-venv/
 .venv/
-env/
-.env
-
-# Banco de dados local SQLite
-data/*.db
-data/*.sqlite
-data/*.sqlite3
-
-# Testes e cobertura
+venv/
+__pycache__/
+*.pyc
 .pytest_cache/
-.coverage
-htmlcov/
-
-# IDEs e Sistema
+instance/
+*.db
 .vscode/
-.idea/
 .DS_Store
-Thumbs.db

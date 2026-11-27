@@ -1,16 +1,22 @@
-"""
-Ponto de entrada raiz da aplicação Flask.
-Compatível com execuções a partir da raiz (python app.py) ou python -m backend.app.
-"""
+"""Ponto de entrada: Sistema Especialista para Oficina Mecânica (Flask)."""
+from flask import Flask
 
-from __future__ import annotations
+from backend.routes import Servicos, bp, registrar_erros
+from config import Config
 
-from backend.app import create_app
 
-import os
+def create_app(config=None):
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    if config:
+        app.config.update(config)
+    app.extensions["oficina"] = Servicos(app.config)
+    app.register_blueprint(bp)
+    registrar_erros(app)
+    return app
 
-app = create_app()
 
 if __name__ == "__main__":
-    debug_mode = os.environ.get("FLASK_DEBUG", "0").lower() in ("1", "true")
-    app.run(debug=debug_mode, port=5000)
+    aplicacao = create_app()
+    print("Sistema Especialista para Oficina Mecânica -> http://127.0.0.1:5000")
+    aplicacao.run(host="127.0.0.1", port=5000, debug=aplicacao.config["DEBUG"])
