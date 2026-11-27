@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block titulo %}Histórico{% endblock %}
+{% block conteudo %}
+<div class="page-head"><div><h1>Histórico de diagnósticos</h1><p class="muted">Registro dos atendimentos e diagnósticos realizados na oficina.</p></div>
+  <a class="btn primario" href="{{ url_for('oficina.pagina_triagem') }}">Nova triagem</a></div>
+<div id="aviso"></div>
+<form class="card filtros" id="form-filtros">
+  <div><label for="f-q">Buscar</label><input type="search" id="f-q" placeholder="Diagnóstico, sintoma ou veículo"></div>
+  <div><label for="f-categoria">Categoria</label><select id="f-categoria"><option value="">Todas</option></select></div>
+  <div><label for="f-status">Status</label><select id="f-status"><option value="">Todos</option><option value="conclusivo">Conclusivo</option><option value="inconclusivo">Inconclusivo</option></select></div>
+  <div class="acoes"><button class="btn primario" type="submit">Filtrar</button><button class="btn" type="button" id="btn-limpar">Limpar</button></div>
+</form>
+<div class="card" style="margin-top:1rem">
+  <p class="muted" id="total"></p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Nº</th><th>Data e hora</th><th>Veículo</th><th>Categoria</th><th>Diagnóstico</th><th>Índice</th><th>Status</th><th></th></tr></thead>
+    <tbody id="linhas"></tbody>
+  </table></div>
+  <div class="paginacao"><button class="btn" id="btn-ant">Anterior</button><span id="pagina-info"></span><button class="btn" id="btn-prox">Próxima</button></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/historico.js') }}"></script>{% endblock %}

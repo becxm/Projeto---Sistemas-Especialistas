@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block titulo %}Resultado do diagnóstico{% endblock %}
+{% block conteudo %}
+<div id="aviso"></div>
+<div id="resultado" data-id="{{ diag_id }}"><div class="card empty">Carregando diagnóstico…</div></div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/resultado.js') }}"></script>{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block titulo %}Base de conhecimento{% endblock %}
+{% block conteudo %}
+<div class="page-head"><div><h1>Base de conhecimento</h1><p class="muted" id="resumo">Regras e fatos carregados de arquivos JSON.</p></div></div>
+<div id="aviso"></div>
+<div class="abas" role="tablist">
+  <button class="aba" role="tab" aria-selected="true" data-aba="regras">Regras</button>
+  <button class="aba" role="tab" aria-selected="false" data-aba="fatos">Fatos</button>
+  <button class="aba" role="tab" aria-selected="false" data-aba="importar">Importar e exportar</button>
+</div>
+<section id="aba-regras">
+  <form class="card filtros" id="form-regras">
+    <div><label for="r-q">Buscar regra</label><input type="search" id="r-q" placeholder="Sintoma, diagnóstico ou id"></div>
+    <div><label for="r-categoria">Categoria</label><select id="r-categoria"><option value="">Todas</option></select></div>
+    <div><label for="r-tipo">Tipo</label><select id="r-tipo"><option value="">Todos</option><option value="diagnostico">Diagnóstico</option><option value="intermediaria">Intermediária (extensão)</option></select></div>
+    <div><button class="btn primario" type="submit">Filtrar</button></div>
+  </form>
+  <div id="lista-regras" style="margin-top:1rem"></div>
+</section>
+<section id="aba-fatos" hidden>
+  <div class="card"><div class="table-wrap"><table>
+    <thead><tr><th>Id</th><th>Descrição</th><th>Categoria</th><th>Tipo</th></tr></thead><tbody id="linhas-fatos"></tbody></table></div></div>
+</section>
+<section id="aba-importar" hidden>
+  <div class="card">
+    <h2>Importar regras (JSON)</h2>
+    <p class="muted">Cole uma lista de regras ou escolha um arquivo. As regras são validadas e gravadas em <code>data/regras.json</code> sem alterar o código.</p>
+    <div class="campo"><label for="arquivo">Arquivo .json</label><input type="file" id="arquivo" accept=".json,application/json"></div>
+    <div class="campo"><label for="json-regras">Conteúdo</label><textarea id="json-regras" spellcheck="false" placeholder='[{"id":"R21","categoria":"freios","tipo":"diagnostico","condicoes":[{"fato":"luz_abs_acesa","valor":true}],"diagnostico":"Exemplo","cf":0.7}]'></textarea></div>
+    <div class="campo"><label class="check-inline"><input type="checkbox" id="substituir"> Substituir regras existentes com o mesmo id</label></div>
+    <div class="acoes"><button class="btn primario" id="btn-importar">Importar regras</button><a class="btn" href="/api/regras/exportar" download>Exportar regras atuais</a></div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/conhecimento.js') }}"></script>{% endblock %}

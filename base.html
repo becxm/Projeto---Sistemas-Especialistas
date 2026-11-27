@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Sistema Especialista{% endblock %} · Oficina Mecânica</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <a class="brand" href="{{ url_for('oficina.pagina_dashboard') }}"><span class="brand-mark" aria-hidden="true"></span>Diagnóstico da oficina</a>
+      <nav aria-label="Navegação principal">
+        <a href="{{ url_for('oficina.pagina_dashboard') }}" class="{{ 'ativo' if ativo == 'dashboard' }}">Dashboard</a>
+        <a href="{{ url_for('oficina.pagina_triagem') }}" class="{{ 'ativo' if ativo == 'triagem' }}">Nova triagem</a>
+        <a href="{{ url_for('oficina.pagina_historico') }}" class="{{ 'ativo' if ativo == 'historico' }}">Histórico</a>
+        <a href="{{ url_for('oficina.pagina_conhecimento') }}" class="{{ 'ativo' if ativo == 'conhecimento' }}">Base de conhecimento</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    {% if kb_erro %}<div class="alerta erro" role="alert"><strong>Base de conhecimento indisponível.</strong> {{ kb_erro }}</div>{% endif %}
+    {% if db_erro %}<div class="alerta erro" role="alert"><strong>Banco de dados indisponível.</strong> {{ db_erro }}</div>{% endif %}
+    {% block conteudo %}{% endblock %}
+  </main>
+  <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

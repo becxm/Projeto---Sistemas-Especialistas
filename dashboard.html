@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block titulo %}Dashboard{% endblock %}
+{% block conteudo %}
+<div class="page-head">
+  <div>
+    <h1>Painel da oficina</h1>
+    <p class="muted">Triagem e diagnóstico de falhas automotivas com sistema especialista baseado em regras.</p>
+  </div>
+  <div class="acoes">
+    <button class="btn" id="btn-demo" type="button">Carregar dados de exemplo</button>
+    <a class="btn primario grande" href="{{ url_for('oficina.pagina_triagem') }}">Iniciar novo diagnóstico</a>
+  </div>
+</div>
+<div id="aviso"></div>
+<section class="card" style="margin-bottom:1rem">
+  <p style="margin:0"><strong>Contexto do sistema:</strong> Ferramenta de apoio à decisão para o atendimento inicial no balcão da oficina mecânica. O atendente registra os sintomas do veículo, o motor de inferência deduz o diagnóstico provável, indica o mecânico especialista e justifica todo o raciocínio.</p>
+</section>
+<section class="grid cols-4" aria-label="Indicadores">
+  <div class="card kpi destaque"><div class="valor" id="kpi-total">–</div><div class="rotulo">Diagnósticos realizados</div></div>
+  <div class="card kpi"><div class="valor" id="kpi-conclusivos">–</div><div class="rotulo">Conclusivos</div></div>
+  <div class="card kpi"><div class="valor" id="kpi-inconclusivos">–</div><div class="rotulo">Inconclusivos</div></div>
+  <div class="card kpi"><div class="valor" id="kpi-indice">–</div><div class="rotulo">Compatibilidade média (heurística)</div></div>
+</section>
+<section class="grid cols-2" style="margin-top:1rem">
+  <div class="card"><h2>Diagnósticos por categoria</h2><div id="g-categorias"></div></div>
+  <div class="card"><h2>Falhas mais frequentes</h2><div id="g-falhas"></div></div>
+</section>
+<section class="card" style="margin-top:1rem"><h2>Diagnósticos por dia</h2><div id="g-dias"></div></section>
+<section class="card" style="margin-top:1rem">
+  <div class="page-head" style="margin-bottom:.5rem"><h2>Histórico recente</h2><a href="{{ url_for('oficina.pagina_historico') }}">Ver histórico completo</a></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Nº</th><th>Data e hora</th><th>Categoria</th><th>Diagnóstico</th><th>Status</th><th></th></tr></thead>
+    <tbody id="recentes"></tbody>
+  </table></div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>{% endblock %}
