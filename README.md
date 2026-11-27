@@ -36,11 +36,29 @@ python -m unittest discover -s tests -v
 ```
 *(Ou, se preferir usar pytest: `pytest -v`)*
 
+### Como rodar os scripts utilitários do repositório
+
+```bash
+# 1. Validar e auditar integridade da Base de Conhecimento (JSON e CSV):
+python scripts/validar_base.py
+
+# 2. Executar a Triagem Interativa diretamente no Terminal (CLI):
+python scripts/cli_triagem.py
+
+# 3. Testar uma hipótese diagnóstica específica via Encadeamento para Trás (Backward Chaining):
+python scripts/cli_triagem.py --hipotese R01
+
+# 4. Popular o SQLite com histórico simulado para testes do Dashboard:
+python scripts/popular_historico.py --qtd 40 --reset
+
+# 5. Converter a base entre formatos JSON e CSV:
+python scripts/converter_kb.py --json-to-csv
+python scripts/converter_kb.py --csv-to-json
+```
+
 ---
 
 ## 2. Estrutura de Pastas e O Que Entregar em Cada Uma
-
-Este guia foi pensado para que qualquer integrante da equipe saiba exatamente onde mexer e o que entregar.
 
 ```text
 projeto-sistemas-especialistas/
@@ -60,7 +78,13 @@ projeto-sistemas-especialistas/
 │   └── database/
 │       └── db.py
 ├── knowledge_base/
-│   └── regras_oficina.json
+│   ├── regras_oficina.json
+│   └── regras_oficina.csv
+├── scripts/
+│   ├── validar_base.py
+│   ├── cli_triagem.py
+│   ├── converter_kb.py
+│   └── popular_historico.py
 ├── data/
 │   └── .gitkeep
 ├── frontend/
@@ -71,7 +95,8 @@ projeto-sistemas-especialistas/
 │   │   └── app.js
 │   └── assets/
 ├── tests/
-│   └── test_engine.py
+│   ├── test_engine.py
+│   └── test_api.py
 └── docs/
     └── .gitkeep
 ```
@@ -79,67 +104,66 @@ projeto-sistemas-especialistas/
 ### Detalhamento por Pasta
 
 #### `knowledge_base/` — Engenharia de Conhecimento (**Responsável: Membro 2**)
-- **Para que serve:** Armazena as regras (`SE [sintomas] ENTÃO [diagnóstico]`) e o catálogo de perguntas em arquivos externos (`.json` ou `.csv`), permitindo atualizar o sistema sem alterar código Python.
-- **O que já existe:** `regras_oficina.json` com as **20 regras iniciais** do plano de projeto.
+- **Para que serve:** Armazena as regras (`SE [sintomas] ENTÃO [diagnóstico]`) e o catálogo de perguntas em arquivos externos (`.json` e `.csv`), permitindo atualizar o sistema sem alterar código Python.
+- **O que já existe:**
+  - `regras_oficina.json`: **26 regras de diagnóstico** cobrindo 9 subsistemas veiculares (Elétrica, Motor, Freios, Suspensão, Arrefecimento, Injeção, Transmissão, Escapamento e Turbo).
+  - `regras_oficina.csv`: Versão tabular estruturada para edição em planilhas e interoperabilidade.
 - **O que entregar/manter:**
-  - Garantir que todas as 20+ regras estejam bem descritas, com `sintomas`, `diagnostico`, `solucao`, `especialista` e `confianca` (de `0.0` a `1.0`).
-  - Se quiserem adicionar mais regras (ex: `R21`, `R22`...) ou criar uma versão em `.csv` para demonstrar extensibilidade, basta colocar nesta pasta.
+  - Garantir que todas as regras possuam `sintomas`, `diagnostico`, `solucao`, `especialista` e `confianca` (de `0.0` a `1.0`).
+  - Executar `python scripts/validar_base.py` antes de novos commits para assegurar ausência de sintomas órfãos ou IDs duplicados.
+
+#### `scripts/` — Utilitários e Ferramentas Operacionais
+- **`validar_base.py`:** Auditor automatizado da consistência e integridade das bases JSON e CSV.
+- **`cli_triagem.py`:** Simulador completo de triagem e teste de hipóteses por linha de comando.
+- **`converter_kb.py`:** Utilitário de exportação e importação bidirecional JSON <-> CSV.
+- **`popular_historico.py`:** Gerador de massa de dados realista para alimentar o SQLite e o Dashboard.
 
 #### `backend/engine/` — Motor de Inferência (**Responsável: Membro 1 + Membro 5**)
-- **Para que serve:** Contém a lógica de inteligência do sistema especialista.
-- **O que já existe:** `inference.py` com a classe `InferenceEngine` (encadeamento para frente, cálculo de probabilidade/certeza e seleção dinâmica da próxima pergunta).
-- **O que entregar/manter:**
-  - Melhorar ou expandir o encadeamento (ex: adicionar suporte a encadeamento para trás ou desempate entre regras).
-  - Refinar o cálculo de incerteza/probabilidade quando apenas parte dos sintomas é confirmada.
+- **Para que serve:** Contém a inteligência do sistema especialista.
+- **Capacidades implementadas:**
+  - **Encadeamento para Frente (Forward Chaining):** Avaliação de sintomas confirmados/negados com cálculo de cobertura e probabilidade ponderada.
+  - **Encadeamento para Trás (Backward Chaining):** Teste de hipóteses guiado por metas (`backward_chaining`), indicando se uma suspeita foi confirmada, refutada ou quais sintomas faltam checar.
+  - **Resolução de Conflitos e Desempate:** Ordenação por cobertura, probabilidade e confiança da regra.
+  - **Filtro por Subsistema:** Capacidade de focar a triagem em um sistema mecânico específico.
 
 #### `backend/explanation/` — Módulo de Explicação e Exceções (**Responsável: Membro 3**)
-- **Para que serve:** É um dos critérios com **maior peso na avaliação**. Explica ao usuário **por que/como** o sistema chegou àquela conclusão e protege contra entradas inválidas.
-- **O que já existe:** `explainer.py` com `validate_facts()` (validação de entradas) e `build_explanation()` (lista regras ativadas, fatos confirmados e fallback `"Diagnóstico Inconclusivo"`).
-- **O que entregar/manter:**
-  - Garantir mensagens claras de erro caso alguém envie dados inválidos para a API.
-  - Garantir que a explicação detalhada mostre exatamente quais regras e fatos foram ativados.
+- **Para que serve:** Explica ao usuário **por que/como** o sistema chegou àquela conclusão e protege contra entradas inválidas.
+- **Capacidades implementadas:**
+  - `validate_facts()`: Validação estrita de entradas com exceção customizada `InvalidInputError`.
+  - `build_explanation()`: Painel detalhado de justificativa, listando sintomas confirmados, regras ativadas e fallback amigável para casos inconclusivos.
 
-#### `backend/loaders/` — Leitura de JSON/CSV (**Responsável: Membro 5**)
-- **Para que serve:** Lê e valida os arquivos da pasta `knowledge_base/`.
-- **O que já existe:** `kb_loader.py` com `load_from_json()` e `load_from_csv()`.
-- **O que entregar/manter:**
-  - Validar se faltam campos obrigatórios ao carregar novos arquivos.
-  - Se o grupo usar `.csv` na interface, conectar `load_from_csv()` na API ou em um script de importação.
+#### `backend/loaders/` — Leitura e Escrita de JSON/CSV (**Responsável: Membro 5**)
+- **Para que serve:** Manipulação de arquivos externos da base de conhecimento.
+- **Capacidades implementadas:**
+  - `load_from_json()` e `load_from_csv()`: Carga com validação rigorosa de campos obrigatórios.
+  - `save_to_json()` e `save_to_csv()`: Exportação estruturada.
 
 #### `backend/database/` e `data/` — Histórico e Dados Estatísticos (**Responsável: Membro 1 + Membro 5**)
-- **Para que serve:** Salva todos os diagnósticos feitos no balcão em um banco **SQLite** (`data/oficina.db`) para gerar métricas (ex: *"45% dos chamados foram no sistema elétrico"*).
-- **O que já existe:** `db.py` com `DiagnosticDatabase` (cria tabela `diagnosticos`, grava registros e calcula estatísticas).
-- **O que entregar/manter:**
-  - A pasta `data/` guarda o arquivo `.db` gerado automaticamente (ela é ignorada no Git pelo `.gitignore` para não subir banco local).
-  - Adicionar novas consultas estatísticas em `db.py` se o dashboard precisar de mais gráficos/filtros (ex: por semana).
+- **Para que serve:** Salva os diagnósticos em banco **SQLite** (`data/oficina.db`) e gera métricas analíticas.
+- **Capacidades implementadas:**
+  - `log_diagnostic()`: Registro com timestamp, sintomas, probabilidade e status.
+  - `get_stats()`: Métricas agregadas de taxa de resolutividade, distribuição por sistema e diagnósticos recentes.
+  - `get_history()`: Consulta paginada com suporte a filtros dinâmicos por sistema e status.
 
 #### `backend/api/` e `backend/app.py` — API Web (**Responsável: Membro 1 + Membro 4**)
-- **Para que serve:** Conecta o Frontend ao Motor de Inferência, Explicação e Banco de Dados via HTTP/JSON.
-- **O que já existe:**
-  - `GET /api/health` — verifica se a API está no ar e quantas regras estão carregadas.
-  - `GET /api/symptoms` — lista o catálogo de sintomas.
-  - `POST /api/triage/next` — devolve a próxima pergunta da triagem interativa.
-  - `POST /api/diagnose` — executa o diagnóstico, gera a explicação e salva no SQLite.
-  - `GET /api/stats` — devolve os dados para o Dashboard.
-- **O que entregar/manter:** Novas rotas que a interface precisar (ex: upload/recarga de JSON, filtros no histórico).
+- **Para que serve:** Conecta a interface gráfica ao motor de inferência, módulo de explicação e banco de dados.
+- **Endpoints disponíveis:**
+  - `GET /api/health` — Status da API, total de regras e subsistemas mapeados.
+  - `GET /api/symptoms` — Catálogo completo de sintomas com perguntas.
+  - `GET /api/systems` — Lista de subsistemas veiculares contemplados.
+  - `POST /api/triage/next` — Próxima pergunta relevante da triagem interativa.
+  - `POST /api/triage/hypothesis` — Validação de hipótese diagnóstica (Backward Chaining).
+  - `POST /api/diagnose` — Executa o diagnóstico, gera explicação e salva no banco.
+  - `GET /api/stats` — Métricas consolidadas para o Dashboard.
+  - `GET /api/diagnostics/history` — Histórico paginado e filtrado de atendimentos.
+  - `POST /api/knowledge-base/reload` — Recarga dinâmica de regras (JSON ou CSV) sem reiniciar a aplicação.
 
 #### `frontend/` — Interface Web e UX (**Responsável: Membro 4**)
-- **Para que serve:** Tela visual da oficina (em **dark mode**), dividida em:
-  1. **Dashboard Inicial:** métricas gerais e histórico recente.
-  2. **Triagem Interativa:** perguntas uma a uma (sem formulário gigante).
-  3. **Resultado + Explicação:** diagnóstico, solução, especialista e painel "Por que / Como".
-- **O que já existe:** `index.html`, `css/style.css` e `js/app.js` integrados com a API.
-- **O que entregar/manter:**
-  - Evoluir o visual em `css/style.css` e adicionar imagens/ícones em `frontend/assets/`.
-  - Garantir validação visual e tratamento amigável de erros no `js/app.js`.
+- Tela visual da oficina em tema moderno (Dark Mode), integrada à API para exibição do Dashboard estatístico, triagem interativa passo a passo e painel explicativo.
 
 #### `tests/` — Testes Automatizados (**Responsável: Membro 5 + Todos**)
-- **Para que serve:** Garante que mudanças no código não quebrem diagnósticos existentes.
-- **O que já existe:** `test_engine.py` cobrindo base de 20 regras, Regra R01, fallback inconclusivo, validação de entrada e SQLite.
-- **O que entregar/manter:** Criar casos de teste para outras regras (ex: Freios, Suspensão, Arrefecimento) e para os endpoints da API.
-
-#### `docs/` — Documentação e Apresentação (**Responsável: Membro 5 + Todos**)
-- **Para que serve:** Guardar diagramas, roteiro da apresentação (reunião simulada de **9 a 11 minutos**) e o PDF final com nomes, link do GitHub e link da gravação.
+- **`test_engine.py`:** Testes unitários do motor (forward/backward chaining, filtros, CSV loader, banco SQLite).
+- **`test_api.py`:** Testes de integração de todos os endpoints REST da aplicação Flask.
 
 ---
 
@@ -151,9 +175,9 @@ projeto-sistemas-especialistas/
 | **Membro 2** | Engenharia de Conhecimento | `knowledge_base/` |
 | **Membro 3** | Exceções e Módulo de Explicação | `backend/explanation/` |
 | **Membro 4** | Interface Web e UX | `frontend/` |
-| **Membro 5** | Diferenciais, Qualidade e Docs | `backend/loaders/`, `tests/`, `docs/`, `README.md` |
+| **Membro 5** | Diferenciais, Qualidade e Docs | `backend/loaders/`, `scripts/`, `tests/`, `docs/`, `README.md` |
 
 ### Boas Práticas no GitHub (Avaliado pelo Professor)
-1. **Nunca commitar direto na `main`:** Crie sempre uma branch para sua tarefa (ex: `feature/api-motor`, `feature/ui-dashboard`, `feature/regras-freios`).
-2. **Commits pequenos e frequentes:** O histórico de commits comprova a participação de cada integrante.
-3. **Pull Requests (PRs):** Ao terminar sua tarefa, abra um PR no GitHub e peça para outro colega revisar antes do merge.
+1. **Commits pequenos, frequentes e semânticos:** O histórico comprova a evolução de cada módulo (padrão Conventional Commits: `feat`, `fix`, `test`, `docs`).
+2. **Branches por funcionalidade:** Crie sempre uma branch para sua tarefa (ex: `feature/api-motor`, `feature/ui-dashboard`, `feature/regras-freios`).
+3. **Pull Requests (PRs):** Revise as alterações e execute a suite de testes antes de mesclar na `main`.
