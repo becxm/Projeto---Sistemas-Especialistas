@@ -1,9 +1,10 @@
 """
-Módulo de carregamento da Base de Conhecimento (JSON e CSV).
+Módulo de carregamento e exportação da Base de Conhecimento (JSON e CSV).
 
 Responsabilidade (Membro 5):
 - Ler regras e fatos de arquivos externos (.json ou .csv) sem alterar código-fonte.
 - Validar a estrutura mínima de cada regra antes de entregar ao motor de inferência.
+- Suportar persistência e exportação bidirecional de regras.
 """
 
 from __future__ import annotations
@@ -83,3 +84,32 @@ def load_from_csv(file_path: str | Path) -> dict[str, Any]:
         raise KnowledgeBaseError("O arquivo CSV não contém regras válidas.")
 
     return {"sintomas_catalogo": {}, "regras": regras}
+
+
+def save_to_json(data: dict[str, Any], file_path: str | Path) -> None:
+    """Salva catálogo de sintomas e regras em formato JSON estruturado."""
+    path = Path(file_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def save_to_csv(rules: list[dict[str, Any]], file_path: str | Path) -> None:
+    """Exporta lista de regras para arquivo CSV padronizado."""
+    path = Path(file_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = ["id", "sistema", "sintomas", "diagnostico", "solucao", "especialista", "confianca"]
+    with path.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for rule in rules:
+            sintomas_str = ";".join(rule.get("sintomas", []))
+            writer.writerow({
+                "id": rule.get("id", ""),
+                "sistema": rule.get("sistema", ""),
+                "sintomas": sintomas_str,
+                "diagnostico": rule.get("diagnostico", ""),
+                "solucao": rule.get("solucao", ""),
+                "especialista": rule.get("especialista", ""),
+                "confianca": rule.get("confianca", 0.85),
+            })
