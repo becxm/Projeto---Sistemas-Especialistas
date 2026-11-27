@@ -200,7 +200,7 @@ projeto-sistemas-especialistas/
 
 ## 3. Divisão da Equipe e Regras de Git
 
-### Divisão de Apresentação (Fontes: Gemini)
+### Divisão de Apresentação
 
 | Integrante | Tópico Principal | O Que Apresentar |
 | :--- | :--- | :--- |
