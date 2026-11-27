@@ -33,7 +33,22 @@
     "ar_condicionado_so_venta": "O ar-condicionado só venta e não gela?",
     "compressor_arma": "O compressor do ar-condicionado arma normalmente?",
     "cheiro_doce_cabine": "Há um cheiro 'doce' forte dentro da cabine?",
-    "tapete_umido_frente": "O tapete da parte da frente está úmido?"
+    "tapete_umido_frente": "O tapete da parte da frente está úmido?",
+    "carro_morre_em_marcha_lenta": "O carro morre ou oscila fortemente em marcha lenta?",
+    "consumo_excessivo_combustivel": "Houve um aumento repentino e anormal no consumo de combustível?",
+    "cheiro_gasolina_escapamento": "Sente-se cheiro forte de gasolina crua saindo pelo escapamento?",
+    "perda_potencia_subida": "O veículo perde força expressiva ao subir ladeiras ou sob carga?",
+    "barulho_chocalho_debaixo_carro": "Há um barulho metálico de chocalho ou pedras soltas sob o assoalho?",
+    "tranco_troca_marcha_automatica": "O câmbio automático dá trancos perceptíveis nas trocas de marcha?",
+    "patinacao_ao_arrancar": "O motor sobe o giro sem que o carro acelere proporcionalmente (patinação)?",
+    "oleo_transmissao_escuro": "O fluido de transmissão na vareta está escuro ou com cheiro de queimado?",
+    "freio_mao_nao_trava": "O freio de estacionamento não segura o carro em aclives?",
+    "aviso_freio_estacionamento_painel": "Há luz ou aviso de avaria no freio de estacionamento no painel?",
+    "ruido_agudo_chiado_motor": "Ouve-se um chiado agudo contínuo vindo da frente do motor?",
+    "marcas_trincas_correia": "A correia visível possui marcas de trincas, desfiamento ou ressecamento?",
+    "assobio_forte_ao_acelerar": "Ouve-se um assobio alto similar a uma sirene ao exigir aceleração?",
+    "fumaca_preta_aceleracao": "Sai fumaça preta em excesso em acelerações fortes?",
+    "perda_pressao_turbo": "O manômetro de pressão do turbo indica queda ou o carro entra em modo de emergência?"
   },
   "regras": [
     {
@@ -215,6 +230,60 @@
       "solucao": "Inspecionar mangueiras e núcleo do radiador de ar quente sob o painel.",
       "especialista": "Mecânico de Arrefecimento / Ar-Condicionado",
       "confianca": 0.92
+    },
+    {
+      "id": "R21",
+      "sistema": "Injeção & Combustível",
+      "sintomas": ["carro_morre_em_marcha_lenta", "consumo_excessivo_combustivel", "cheiro_gasolina_escapamento"],
+      "diagnostico": "Bicos injetores entupidos, estragados ou travados abertos",
+      "solucao": "Realizar limpeza por ultrassom, teste de vazão e equalização ou substituição dos bicos injetores.",
+      "especialista": "Especialista em Injeção Eletrônica",
+      "confianca": 0.92
+    },
+    {
+      "id": "R22",
+      "sistema": "Escapamento & Emissões",
+      "sintomas": ["perda_potencia_subida", "barulho_chocalho_debaixo_carro", "luz_injecao_acesa"],
+      "diagnostico": "Catalisador entupido ou cerâmica interna quebrada",
+      "solucao": "Testar contrapressão do escapamento e efetuar a troca do catalisador e inspeção da sonda lambda.",
+      "especialista": "Mecânico Geral / Especialista em Escapamentos",
+      "confianca": 0.90
+    },
+    {
+      "id": "R23",
+      "sistema": "Transmissão & Câmbio",
+      "sintomas": ["tranco_troca_marcha_automatica", "patinacao_ao_arrancar", "oleo_transmissao_escuro"],
+      "diagnostico": "Degradação do fluido da transmissão automática ou corpo de válvulas obstruído",
+      "solucao": "Troca total do fluido ATF por diálise, troca do filtro da transmissão e recalibração do módulo.",
+      "especialista": "Especialista em Câmbio Automático",
+      "confianca": 0.94
+    },
+    {
+      "id": "R24",
+      "sistema": "Freios",
+      "sintomas": ["freio_mao_nao_trava", "aviso_freio_estacionamento_painel"],
+      "diagnostico": "Falha no atuador elétrico do freio de estacionamento (EPB) ou cabo rompido",
+      "solucao": "Inspecionar servo-motores das pinças traseiras, chicote elétrico e interruptor do console.",
+      "especialista": "Especialista em Freios & Eletrônica Embarcada",
+      "confianca": 0.89
+    },
+    {
+      "id": "R25",
+      "sistema": "Motor & Correias",
+      "sintomas": ["ruido_agudo_chiado_motor", "marcas_trincas_correia"],
+      "diagnostico": "Correia dentada ou correia de acessórios ressecada e tensionador com folga",
+      "solucao": "URGENTE: Não ligar o motor; substituir imediatamente o kit de correia dentada, tensor e bomba d'água.",
+      "especialista": "Mecânico de Motor",
+      "confianca": 0.96
+    },
+    {
+      "id": "R26",
+      "sistema": "Motor & Admissão",
+      "sintomas": ["assobio_forte_ao_acelerar", "fumaca_preta_aceleracao", "perda_pressao_turbo"],
+      "diagnostico": "Vazamento nas mangueiras do intercooler ou folga no rotor da turbina",
+      "solucao": "Testar estanqueidade do sistema de pressurização e revisar conjunto rotativo do turbocompressor.",
+      "especialista": "Especialista em Turbos e Sobrealimentação",
+      "confianca": 0.91
     }
   ]
 }
