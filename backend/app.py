@@ -28,8 +28,11 @@ def create_app(kb_path: Path = KB_PATH, db_path: Path = DB_PATH) -> Flask:
     CORS(app)
 
     kb = load_from_json(kb_path)
-    app.config["ENGINE"] = InferenceEngine(kb)
-    app.config["DB"] = DiagnosticDatabase(db_path)
+    engine = InferenceEngine(kb)
+    db = DiagnosticDatabase(db_path)
+    app.config["ENGINE"] = engine
+    app.config["DB"] = db
+    app.extensions["oficina"] = db
 
     app.register_blueprint(api_bp)
 

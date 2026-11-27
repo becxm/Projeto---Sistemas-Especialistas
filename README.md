@@ -24,7 +24,9 @@ python -m venv .venv
 pip install -r requirements.txt
 
 # 4. Rodar a aplicação (Backend + Frontend)
-python -m backend.app
+python app.py
+# ou:
+# python -m backend.app
 ```
 
 Acesse no navegador: `http://127.0.0.1:5000`
@@ -34,7 +36,7 @@ Acesse no navegador: `http://127.0.0.1:5000`
 ```bash
 python -m unittest discover -s tests -v
 ```
-*(Ou, se preferir usar pytest: `pytest -v`)*
+*(Ou com pytest: `pytest -v`)*
 
 ### Como rodar os scripts utilitários do repositório
 
@@ -50,8 +52,13 @@ python scripts/cli_triagem.py --hipotese R01
 
 # 4. Popular o SQLite com histórico simulado para testes do Dashboard:
 python scripts/popular_historico.py --qtd 40 --reset
+# ou script de demonstração:
+python scripts/popular_demo.py
 
-# 5. Converter a base entre formatos JSON e CSV:
+# 5. Gerar dicionário de regras e documentação automática:
+python scripts/gerar_docs_regras.py
+
+# 6. Converter a base entre formatos JSON e CSV:
 python scripts/converter_kb.py --json-to-csv
 python scripts/converter_kb.py --csv-to-json
 ```
@@ -63,10 +70,12 @@ python scripts/converter_kb.py --csv-to-json
 ```text
 projeto-sistemas-especialistas/
 ├── .gitignore
+├── app.py
 ├── README.md
 ├── requirements.txt
 ├── backend/
 │   ├── app.py
+│   ├── demo.py
 │   ├── api/
 │   │   └── routes.py
 │   ├── engine/
@@ -80,34 +89,54 @@ projeto-sistemas-especialistas/
 ├── knowledge_base/
 │   ├── regras_oficina.json
 │   └── regras_oficina.csv
+├── data/
+│   ├── fatos.json
+│   ├── regras.json
+│   └── oficina.db
 ├── scripts/
 │   ├── validar_base.py
 │   ├── cli_triagem.py
 │   ├── converter_kb.py
-│   └── popular_historico.py
-├── data/
-│   └── .gitkeep
-├── frontend/
-│   ├── index.html
+│   ├── popular_historico.py
+│   ├── popular_demo.py
+│   └── gerar_docs_regras.py
+├── templates/
+│   ├── base.html
+│   ├── triagem.html
+│   ├── resultado.html
+│   ├── historico.html
+│   ├── dashboard.html
+│   ├── conhecimento.html
+│   └── erro.html
+├── static/
 │   ├── css/
 │   │   └── style.css
-│   ├── js/
-│   │   └── app.js
-│   └── assets/
+│   └── js/
+│       ├── common.js
+│       ├── triagem.js
+│       ├── resultado.js
+│       ├── historico.js
+│       ├── dashboard.js
+│       └── conhecimento.js
+├── frontend/
+│   ├── index.html
+│   ├── css/style.css
+│   └── js/app.js
 ├── tests/
 │   ├── test_engine.py
 │   └── test_api.py
 └── docs/
-    └── .gitkeep
+    └── regras.md
 ```
 
 ### Detalhamento por Pasta
 
-#### `knowledge_base/` — Engenharia de Conhecimento (**Responsável: Membro 2**)
-- **Para que serve:** Armazena as regras (`SE [sintomas] ENTÃO [diagnóstico]`) e o catálogo de perguntas em arquivos externos (`.json` e `.csv`), permitindo atualizar o sistema sem alterar código Python.
+#### `knowledge_base/` e `data/` — Engenharia de Conhecimento (**Responsável: Membro 2**)
+- **Para que serve:** Armazena as regras (`SE [sintomas] ENTÃO [diagnóstico]`), catálogo de fatos e perguntas em arquivos externos (`.json` e `.csv`), permitindo atualizar o sistema sem alterar código Python.
 - **O que já existe:**
-  - `regras_oficina.json`: **26 regras de diagnóstico** cobrindo 9 subsistemas veiculares (Elétrica, Motor, Freios, Suspensão, Arrefecimento, Injeção, Transmissão, Escapamento e Turbo).
-  - `regras_oficina.csv`: Versão tabular estruturada para edição em planilhas e interoperabilidade.
+  - `knowledge_base/regras_oficina.json`: **26 regras de diagnóstico** cobrindo 9 subsistemas veiculares (Elétrica, Motor, Freios, Suspensão, Arrefecimento, Injeção, Transmissão, Escapamento e Turbo).
+  - `knowledge_base/regras_oficina.csv`: Versão tabular estruturada para edição em planilhas e interoperabilidade.
+  - `data/fatos.json` e `data/regras.json`: Base de regras e fatos integrados com templates HTML.
 - **O que entregar/manter:**
   - Garantir que todas as regras possuam `sintomas`, `diagnostico`, `solucao`, `especialista` e `confianca` (de `0.0` a `1.0`).
   - Executar `python scripts/validar_base.py` antes de novos commits para assegurar ausência de sintomas órfãos ou IDs duplicados.
@@ -116,7 +145,8 @@ projeto-sistemas-especialistas/
 - **`validar_base.py`:** Auditor automatizado da consistência e integridade das bases JSON e CSV.
 - **`cli_triagem.py`:** Simulador completo de triagem e teste de hipóteses por linha de comando.
 - **`converter_kb.py`:** Utilitário de exportação e importação bidirecional JSON <-> CSV.
-- **`popular_historico.py`:** Gerador de massa de dados realista para alimentar o SQLite e o Dashboard.
+- **`popular_historico.py` / `popular_demo.py`:** Geradores de massa de dados realista para alimentar o SQLite e o Dashboard.
+- **`gerar_docs_regras.py`:** Gerador automatizado do dicionário de regras em Markdown (`docs/regras.md`).
 
 #### `backend/engine/` — Motor de Inferência (**Responsável: Membro 1 + Membro 5**)
 - **Para que serve:** Contém a inteligência do sistema especialista.
@@ -158,8 +188,8 @@ projeto-sistemas-especialistas/
   - `GET /api/diagnostics/history` — Histórico paginado e filtrado de atendimentos.
   - `POST /api/knowledge-base/reload` — Recarga dinâmica de regras (JSON ou CSV) sem reiniciar a aplicação.
 
-#### `frontend/` — Interface Web e UX (**Responsável: Membro 4**)
-- Tela visual da oficina em tema moderno (Dark Mode), integrada à API para exibição do Dashboard estatístico, triagem interativa passo a passo e painel explicativo.
+#### `frontend/`, `templates/` e `static/` — Interface Web e UX (**Responsável: Membro 4**)
+- Telas da oficina em tema moderno (Dark Mode), com suporte tanto a Single Page Application (`frontend/`) quanto a páginas completas Jinja2 (`templates/` e `static/`), com navegação por abas: Triagem, Resultado com "Por que / Como", Histórico com filtros, Dashboard e Dicionário de Conhecimento.
 
 #### `tests/` — Testes Automatizados (**Responsável: Membro 5 + Todos**)
 - **`test_engine.py`:** Testes unitários do motor (forward/backward chaining, filtros, CSV loader, banco SQLite).
@@ -172,9 +202,9 @@ projeto-sistemas-especialistas/
 | Membro | Papel Principal | Pastas Principais |
 | :--- | :--- | :--- |
 | **Membro 1 (Líder)** | Arquitetura, Integração e Revisão | `backend/app.py`, `backend/api/`, `backend/engine/`, `backend/database/` |
-| **Membro 2** | Engenharia de Conhecimento | `knowledge_base/` |
+| **Membro 2** | Engenharia de Conhecimento | `knowledge_base/`, `data/` |
 | **Membro 3** | Exceções e Módulo de Explicação | `backend/explanation/` |
-| **Membro 4** | Interface Web e UX | `frontend/` |
+| **Membro 4** | Interface Web e UX | `frontend/`, `templates/`, `static/` |
 | **Membro 5** | Diferenciais, Qualidade e Docs | `backend/loaders/`, `scripts/`, `tests/`, `docs/`, `README.md` |
 
 ### Boas Práticas no GitHub (Avaliado pelo Professor)
