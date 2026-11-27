@@ -1,0 +1,330 @@
+{
+    "versao": "1.0",
+    "categorias": [
+        {
+            "id": "eletrica_ignicao",
+            "nome": "Elétrica e Ignição",
+            "descricao": "Bateria, partida, alternador, chicote elétrico e injeção.",
+            "icone": "⚡"
+        },
+        {
+            "id": "motor_cambio",
+            "nome": "Motor e Câmbio",
+            "descricao": "Combustão, escapamento, embreagem e junta do cabeçote.",
+            "icone": "⚙️"
+        },
+        {
+            "id": "freios",
+            "nome": "Freios",
+            "descricao": "Pastilhas, discos, sistema hidráulico e ABS.",
+            "icone": "🛑"
+        },
+        {
+            "id": "suspensao_direcao",
+            "nome": "Suspensão e Direção",
+            "descricao": "Alinhamento, amortecimento, direção hidráulica e pneus.",
+            "icone": "🛞"
+        },
+        {
+            "id": "arrefecimento_ar",
+            "nome": "Arrefecimento e Ar-Condicionado",
+            "descricao": "Radiador, ventoinha, mangueiras e climatização.",
+            "icone": "🌡️"
+        }
+    ],
+    "exclusoes": [
+        {
+            "fatos": [
+                "motor_nao_gira",
+                "motor_gira_nao_pega"
+            ],
+            "mensagem": "Contradição: o motor não pode, ao mesmo tempo, não girar e girar normalmente sem pegar."
+        }
+    ],
+    "fatos": [
+        {
+            "id": "motor_nao_gira",
+            "categoria": "eletrica_ignicao",
+            "descricao": "Motor não gira ao virar a chave",
+            "pergunta": "Ao virar a chave, o motor NÃO gira (não há movimento de partida)?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "luzes_fracas",
+            "categoria": "eletrica_ignicao",
+            "descricao": "Luzes do painel fracas",
+            "pergunta": "As luzes do painel estão fracas ou piscando?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "clique_ao_virar_chave",
+            "categoria": "eletrica_ignicao",
+            "descricao": "Clique ao virar a chave",
+            "pergunta": "Você ouve um clique ao virar a chave?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "motor_gira_nao_pega",
+            "categoria": "eletrica_ignicao",
+            "descricao": "Motor gira bem, mas não pega",
+            "pergunta": "O motor gira normalmente, mas não pega (não entra em funcionamento)?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "luz_injecao_acesa",
+            "categoria": "eletrica_ignicao",
+            "descricao": "Luz de injeção acesa",
+            "pergunta": "A luz de injeção eletrônica está acesa no painel?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "cheiro_queimado",
+            "categoria": "eletrica_ignicao",
+            "descricao": "Cheiro de queimado",
+            "pergunta": "Há cheiro de queimado no veículo?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "fumaca_painel",
+            "categoria": "eletrica_ignicao",
+            "descricao": "Fumaça no painel",
+            "pergunta": "Há fumaça saindo na região do painel?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "radio_luz_apagou",
+            "categoria": "eletrica_ignicao",
+            "descricao": "Rádio ou luzes apagaram",
+            "pergunta": "O rádio ou alguma luz apagou de repente?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "bateria_nova_descarrega_rapido",
+            "categoria": "eletrica_ignicao",
+            "descricao": "Bateria nova descarrega rápido",
+            "pergunta": "A bateria é nova e mesmo assim descarrega rápido?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "tensao_bateria",
+            "categoria": "eletrica_ignicao",
+            "descricao": "Tensão medida na bateria (motor ligado)",
+            "pergunta": "Qual a tensão medida na bateria com o motor ligado (em volts)?",
+            "tipo": "numerico",
+            "derivado": false,
+            "unidade": "V",
+            "min": 0,
+            "max": 30,
+            "ajuda": "Meça com multímetro nos terminais da bateria, motor em funcionamento. Valores usuais de carga: 13,5 V a 14,8 V."
+        },
+        {
+            "id": "motor_engasgando",
+            "categoria": "motor_cambio",
+            "descricao": "Carro engasgando na aceleração",
+            "pergunta": "O carro engasga quando você acelera?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "perda_potencia",
+            "categoria": "motor_cambio",
+            "descricao": "Perda de potência",
+            "pergunta": "Houve perda de potência perceptível?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "fumaca_azulada",
+            "categoria": "motor_cambio",
+            "descricao": "Fumaça levemente azulada no escapamento",
+            "pergunta": "A fumaça do escapamento é levemente azulada?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "marcha_arranhando",
+            "categoria": "motor_cambio",
+            "descricao": "Marcha arranhando para entrar",
+            "pergunta": "A marcha arranha para entrar?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "pedal_embreagem_baixo",
+            "categoria": "motor_cambio",
+            "descricao": "Pedal de embreagem baixo",
+            "pergunta": "O pedal da embreagem está baixo (desce mais que o normal)?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "fumaca_branca_espessa",
+            "categoria": "motor_cambio",
+            "descricao": "Fumaça branca espessa no escapamento",
+            "pergunta": "A fumaça do escapamento é branca e espessa?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "reservatorio_agua_abaixando",
+            "categoria": "motor_cambio",
+            "descricao": "Reservatório de água abaixando",
+            "pergunta": "O nível do reservatório de água está abaixando?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "ruido_metalico_freio",
+            "categoria": "freios",
+            "descricao": "Ruído metálico agudo ao frear",
+            "pergunta": "Há ruído metálico agudo (assobio) ao pisar no freio?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "pedal_freio_esponjoso",
+            "categoria": "freios",
+            "descricao": "Pedal do freio esponjoso",
+            "pergunta": "O pedal do freio está esponjoso (desce quase até o assoalho)?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "volante_trepida_frenagem",
+            "categoria": "freios",
+            "descricao": "Volante trepidando ao frear em alta velocidade",
+            "pergunta": "O volante trepida forte apenas ao frear em altas velocidades?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "luz_abs_acesa",
+            "categoria": "freios",
+            "descricao": "Luz do ABS acesa",
+            "pergunta": "A luz do ABS está acesa no painel?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "frenagem_normal_derrapa",
+            "categoria": "freios",
+            "descricao": "Frenagem normal, mas derrapa em freada brusca",
+            "pergunta": "A frenagem é normal, mas o carro derrapa em freada brusca?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "puxando_para_um_lado",
+            "categoria": "suspensao_direcao",
+            "descricao": "Carro puxando fortemente para um lado",
+            "pergunta": "Em linha reta, o carro puxa fortemente para um dos lados?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "ruido_toc_toc",
+            "categoria": "suspensao_direcao",
+            "descricao": "Ruído seco (toc-toc) em lombadas e buracos",
+            "pergunta": "Há ruído seco (\"toc-toc\") ao passar em lombadas ou buracos?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "volante_pesado",
+            "categoria": "suspensao_direcao",
+            "descricao": "Volante muito pesado ao manobrar",
+            "pergunta": "O volante fica muito pesado na hora de manobrar?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "zumbido_direcao",
+            "categoria": "suspensao_direcao",
+            "descricao": "Zumbido na direção hidráulica",
+            "pergunta": "Há zumbido vindo da direção hidráulica?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "pneus_desgaste_interno",
+            "categoria": "suspensao_direcao",
+            "descricao": "Pneus gastando nas bordas internas",
+            "pergunta": "Os pneus estão gastando apenas nas bordas internas, de forma irregular?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "temperatura_vermelho",
+            "categoria": "arrefecimento_ar",
+            "descricao": "Ponteiro de temperatura no vermelho",
+            "pergunta": "O ponteiro de temperatura está no vermelho?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "ventoinha_nao_liga",
+            "categoria": "arrefecimento_ar",
+            "descricao": "Ventoinha não liga",
+            "pergunta": "A ventoinha do radiador não liga?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "poca_liquido_colorido",
+            "categoria": "arrefecimento_ar",
+            "descricao": "Poça de líquido colorido sob o motor",
+            "pergunta": "Há poça de líquido colorido (rosa ou verde) sob o motor após estacionar?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "ar_so_venta_nao_gela",
+            "categoria": "arrefecimento_ar",
+            "descricao": "Ar-condicionado só venta, não gela",
+            "pergunta": "O ar-condicionado só venta e não gela?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "compressor_arma_normal",
+            "categoria": "arrefecimento_ar",
+            "descricao": "Compressor do ar arma normalmente",
+            "pergunta": "O compressor do ar-condicionado arma (liga) normalmente?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "cheiro_doce_cabine",
+            "categoria": "arrefecimento_ar",
+            "descricao": "Cheiro doce forte na cabine",
+            "pergunta": "Há cheiro doce forte dentro da cabine?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "tapete_umido_frente",
+            "categoria": "arrefecimento_ar",
+            "descricao": "Tapete úmido na parte da frente",
+            "pergunta": "O tapete da frente está úmido?",
+            "tipo": "booleano",
+            "derivado": false
+        },
+        {
+            "id": "tensao_abaixo_13_5",
+            "categoria": "eletrica_ignicao",
+            "descricao": "Tensão da bateria abaixo de 13,5 V (fato derivado)",
+            "pergunta": null,
+            "tipo": "booleano",
+            "derivado": true
+        }
+    ]
+}
