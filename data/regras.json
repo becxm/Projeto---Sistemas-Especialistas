@@ -1,0 +1,664 @@
+{
+    "versao": "1.0",
+    "regras": [
+        {
+            "id": "E01",
+            "categoria": "eletrica_ignicao",
+            "tipo": "intermediaria",
+            "origem": "extensao",
+            "nome": "Tensão abaixo de 13,5 V",
+            "condicoes": [
+                {
+                    "fato": "tensao_bateria",
+                    "op": "<",
+                    "valor": 13.5
+                }
+            ],
+            "conclusao": {
+                "fato": "tensao_abaixo_13_5",
+                "valor": true
+            },
+            "explicacao": "Extensão: converte a tensão numérica medida em um fato lógico utilizado pela Regra 04.",
+            "cf": 1.0
+        },
+        {
+            "id": "E02",
+            "categoria": "eletrica_ignicao",
+            "tipo": "intermediaria",
+            "origem": "extensao",
+            "nome": "Tensão em 13,5 V ou mais",
+            "condicoes": [
+                {
+                    "fato": "tensao_bateria",
+                    "op": ">=",
+                    "valor": 13.5
+                }
+            ],
+            "conclusao": {
+                "fato": "tensao_abaixo_13_5",
+                "valor": false
+            },
+            "explicacao": "Extensão: tensão normal de carga; descarta a hipótese de alternador sem carga.",
+            "cf": 1.0
+        },
+        {
+            "id": "R01",
+            "categoria": "eletrica_ignicao",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Bateria descarregada ou fim de vida útil",
+            "condicoes": [
+                {
+                    "fato": "motor_nao_gira",
+                    "op": "==",
+                    "valor": true
+                },
+                {
+                    "fato": "luzes_fracas",
+                    "op": "==",
+                    "valor": true
+                },
+                {
+                    "fato": "clique_ao_virar_chave",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Bateria descarregada ou fim de vida útil",
+            "diagnostico_id": "bateria_descarregada",
+            "explicacao": "Sem girar o motor, com luzes fracas e clique no solenoide, a bateria não fornece corrente suficiente para a partida.",
+            "causas": [
+                "Bateria descarregada",
+                "Bateria no fim da vida útil"
+            ],
+            "recomendacoes": [
+                "Testar a carga da bateria",
+                "Fazer carga ou substituir a bateria",
+                "Verificar bornes e terminais"
+            ],
+            "especialista": "Eletricista automotivo",
+            "cf": 0.9
+        },
+        {
+            "id": "R02",
+            "categoria": "eletrica_ignicao",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Falha na bomba de combustível ou sensor de rotação",
+            "condicoes": [
+                {
+                    "fato": "motor_gira_nao_pega",
+                    "op": "==",
+                    "valor": true
+                },
+                {
+                    "fato": "luz_injecao_acesa",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Falha na bomba de combustível ou sensor de rotação",
+            "diagnostico_id": "falha_bomba_ou_sensor_rotacao",
+            "explicacao": "Motor girando sem pegar com a luz de injeção acesa indica falta de combustível ou perda do sinal de rotação para a central.",
+            "causas": [
+                "Falha na bomba de combustível",
+                "Falha no sensor de rotação"
+            ],
+            "recomendacoes": [
+                "Medir pressão de combustível",
+                "Ler códigos de falha com scanner",
+                "Testar o sensor de rotação"
+            ],
+            "especialista": "Eletricista automotivo",
+            "cf": 0.8
+        },
+        {
+            "id": "R03",
+            "categoria": "eletrica_ignicao",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Curto-circuito no chicote elétrico ou fusível principal rompido",
+            "condicoes": [
+                {
+                    "fato": "cheiro_queimado",
+                    "op": "==",
+                    "valor": true
+                },
+                {
+                    "fato": "fumaca_painel",
+                    "op": "==",
+                    "valor": true
+                },
+                {
+                    "fato": "radio_luz_apagou",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Curto-circuito no chicote elétrico ou fusível principal rompido",
+            "diagnostico_id": "curto_chicote_fusivel",
+            "explicacao": "Cheiro de queimado, fumaça no painel e perda de rádio/luzes apontam sobrecarga elétrica com fusível rompido ou fiação em curto.",
+            "causas": [
+                "Curto-circuito no chicote elétrico",
+                "Fusível principal rompido"
+            ],
+            "recomendacoes": [
+                "Desligar a bateria imediatamente por segurança",
+                "Inspecionar chicote e caixa de fusíveis",
+                "Não substituir fusível por outro de maior amperagem"
+            ],
+            "especialista": "Eletricista automotivo",
+            "cf": 0.85
+        },
+        {
+            "id": "R04",
+            "categoria": "eletrica_ignicao",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Falha no alternador (não está carregando a bateria)",
+            "condicoes": [
+                {
+                    "fato": "bateria_nova_descarrega_rapido",
+                    "op": "==",
+                    "valor": true
+                },
+                {
+                    "fato": "tensao_abaixo_13_5",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Falha no alternador (não está carregando a bateria)",
+            "diagnostico_id": "falha_alternador",
+            "explicacao": "Bateria nova que descarrega rápido, com tensão abaixo de 13,5 V com o motor ligado, indica que o alternador não recarrega o sistema.",
+            "causas": [
+                "Alternador com defeito",
+                "Regulador de tensão com defeito",
+                "Correia do alternador"
+            ],
+            "recomendacoes": [
+                "Testar a saída do alternador",
+                "Verificar correia e regulador de tensão",
+                "Substituir ou recondicionar o alternador"
+            ],
+            "especialista": "Eletricista automotivo",
+            "cf": 0.9
+        },
+        {
+            "id": "R05",
+            "categoria": "motor_cambio",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Velas de ignição gastas ou cabos de vela com fuga de corrente",
+            "condicoes": [
+                {
+                    "fato": "motor_engasgando",
+                    "op": "==",
+                    "valor": true
+                },
+                {
+                    "fato": "perda_potencia",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Velas de ignição gastas ou cabos de vela com fuga de corrente",
+            "diagnostico_id": "velas_ou_cabos",
+            "explicacao": "Engasgos na aceleração com perda de potência são típicos de falha de centelha nos cilindros.",
+            "causas": [
+                "Velas de ignição gastas",
+                "Cabos de vela com fuga de corrente"
+            ],
+            "recomendacoes": [
+                "Inspecionar e trocar o jogo de velas",
+                "Testar a isolação dos cabos de vela"
+            ],
+            "especialista": "Mecânico de motor e câmbio",
+            "cf": 0.85
+        },
+        {
+            "id": "R06",
+            "categoria": "motor_cambio",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Motor queimando óleo (anéis de segmento ou retentores de válvula)",
+            "condicoes": [
+                {
+                    "fato": "fumaca_azulada",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Motor queimando óleo (anéis de segmento ou retentores de válvula)",
+            "diagnostico_id": "motor_queimando_oleo",
+            "explicacao": "A fumaça azulada indica óleo lubrificante chegando à câmara de combustão.",
+            "causas": [
+                "Anéis de segmento desgastados",
+                "Retentores de válvula desgastados"
+            ],
+            "recomendacoes": [
+                "Medir a compressão dos cilindros",
+                "Acompanhar o consumo de óleo",
+                "Avaliar retífica ou troca de retentores"
+            ],
+            "especialista": "Mecânico de motor e câmbio",
+            "cf": 0.8
+        },
+        {
+            "id": "R07",
+            "categoria": "motor_cambio",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Desgaste no kit de embreagem ou fluido do atuador baixo",
+            "condicoes": [
+                {
+                    "fato": "marcha_arranhando",
+                    "op": "==",
+                    "valor": true
+                },
+                {
+                    "fato": "pedal_embreagem_baixo",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Desgaste no kit de embreagem ou fluido do atuador baixo",
+            "diagnostico_id": "embreagem_ou_fluido",
+            "explicacao": "Marcha arranhando com pedal baixo sugere embreagem que não desacopla totalmente por desgaste ou perda de pressão hidráulica.",
+            "causas": [
+                "Desgaste no kit de embreagem",
+                "Fluido do atuador baixo"
+            ],
+            "recomendacoes": [
+                "Verificar o nível do fluido do atuador",
+                "Inspecionar o kit de embreagem",
+                "Substituir o kit se houver desgaste"
+            ],
+            "especialista": "Mecânico de motor e câmbio",
+            "cf": 0.85
+        },
+        {
+            "id": "R08",
+            "categoria": "motor_cambio",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Junta do cabeçote queimada (água vazando para os cilindros)",
+            "condicoes": [
+                {
+                    "fato": "fumaca_branca_espessa",
+                    "op": "==",
+                    "valor": true
+                },
+                {
+                    "fato": "reservatorio_agua_abaixando",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Junta do cabeçote queimada (água vazando para os cilindros)",
+            "diagnostico_id": "junta_cabecote",
+            "explicacao": "Fumaça branca espessa com queda do nível de água indica líquido de arrefecimento entrando na câmara de combustão.",
+            "causas": [
+                "Junta do cabeçote queimada"
+            ],
+            "recomendacoes": [
+                "Fazer teste de estanqueidade do sistema de arrefecimento",
+                "Verificar empenamento do cabeçote",
+                "Não rodar com o motor superaquecido"
+            ],
+            "especialista": "Mecânico de motor e câmbio",
+            "cf": 0.9
+        },
+        {
+            "id": "R09",
+            "categoria": "freios",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Pastilhas de freio excessivamente gastas (atingiu o limitador)",
+            "condicoes": [
+                {
+                    "fato": "ruido_metalico_freio",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Pastilhas de freio excessivamente gastas (atingiu o limitador)",
+            "diagnostico_id": "pastilhas_gastas",
+            "explicacao": "O ruído agudo é emitido pelo limitador de desgaste, indicando que a pastilha chegou ao fim da vida útil.",
+            "causas": [
+                "Pastilhas de freio excessivamente gastas"
+            ],
+            "recomendacoes": [
+                "Medir a espessura das pastilhas",
+                "Substituir as pastilhas",
+                "Inspecionar os discos"
+            ],
+            "especialista": "Mecânico de freios",
+            "cf": 0.9
+        },
+        {
+            "id": "R10",
+            "categoria": "freios",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Ar no sistema hidráulico ou vazamento de fluido de freio",
+            "condicoes": [
+                {
+                    "fato": "pedal_freio_esponjoso",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Ar no sistema hidráulico ou vazamento de fluido de freio",
+            "diagnostico_id": "ar_ou_vazamento_hidraulico",
+            "explicacao": "Pedal esponjoso indica compressibilidade no circuito hidráulico, causada por ar ou perda de fluido.",
+            "causas": [
+                "Ar no sistema hidráulico",
+                "Vazamento de fluido de freio"
+            ],
+            "recomendacoes": [
+                "Verificar o nível e vazamentos",
+                "Sangrar o sistema de freios",
+                "Evitar uso do veículo até a revisão"
+            ],
+            "especialista": "Mecânico de freios",
+            "cf": 0.85
+        },
+        {
+            "id": "R11",
+            "categoria": "freios",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Discos de freio empenados (necessita passe ou troca)",
+            "condicoes": [
+                {
+                    "fato": "volante_trepida_frenagem",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Discos de freio empenados (necessita passe ou troca)",
+            "diagnostico_id": "discos_empenados",
+            "explicacao": "A trepidação ao frear em alta velocidade é típica de variação de espessura ou empenamento dos discos.",
+            "causas": [
+                "Discos de freio empenados"
+            ],
+            "recomendacoes": [
+                "Medir o empenamento dos discos",
+                "Retificar (passe) ou substituir os discos"
+            ],
+            "especialista": "Mecânico de freios",
+            "cf": 0.85
+        },
+        {
+            "id": "R12",
+            "categoria": "freios",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Sensor de velocidade de uma das rodas sujo ou cabo rompido",
+            "condicoes": [
+                {
+                    "fato": "luz_abs_acesa",
+                    "op": "==",
+                    "valor": true
+                },
+                {
+                    "fato": "frenagem_normal_derrapa",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Sensor de velocidade de uma das rodas sujo ou cabo rompido",
+            "diagnostico_id": "sensor_abs",
+            "explicacao": "Luz do ABS acesa com frenagem normal mas derrapagem em freada brusca indica que o ABS está inoperante por falta de sinal de uma roda.",
+            "causas": [
+                "Sensor de velocidade da roda sujo",
+                "Cabo do sensor rompido"
+            ],
+            "recomendacoes": [
+                "Ler o código de falha do ABS",
+                "Limpar ou substituir o sensor da roda",
+                "Verificar o cabo do sensor"
+            ],
+            "especialista": "Mecânico de freios",
+            "cf": 0.85
+        },
+        {
+            "id": "R13",
+            "categoria": "suspensao_direcao",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Alinhamento desregulado ou pressão irregular dos pneus",
+            "condicoes": [
+                {
+                    "fato": "puxando_para_um_lado",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Alinhamento desregulado ou pressão irregular dos pneus",
+            "diagnostico_id": "alinhamento_ou_pressao",
+            "explicacao": "O desvio lateral em linha reta é típico de geometria desregulada ou diferença de calibragem.",
+            "causas": [
+                "Alinhamento desregulado",
+                "Pressão irregular dos pneus"
+            ],
+            "recomendacoes": [
+                "Calibrar os pneus",
+                "Fazer alinhamento e balanceamento"
+            ],
+            "especialista": "Mecânico de suspensão e direção",
+            "cf": 0.8
+        },
+        {
+            "id": "R14",
+            "categoria": "suspensao_direcao",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Bieletas desgastadas, buchas da bandeja ou amortecedor estourado",
+            "condicoes": [
+                {
+                    "fato": "ruido_toc_toc",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Bieletas desgastadas, buchas da bandeja ou amortecedor estourado",
+            "diagnostico_id": "bieletas_buchas_amortecedor",
+            "explicacao": "O ruído seco em irregularidades indica folga em componentes da suspensão.",
+            "causas": [
+                "Bieletas desgastadas",
+                "Buchas da bandeja desgastadas",
+                "Amortecedor estourado"
+            ],
+            "recomendacoes": [
+                "Inspecionar bieletas, buchas e amortecedores no elevador",
+                "Substituir o componente com folga"
+            ],
+            "especialista": "Mecânico de suspensão e direção",
+            "cf": 0.75
+        },
+        {
+            "id": "R15",
+            "categoria": "suspensao_direcao",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Baixo nível de fluido de direção ou bomba hidráulica danificada",
+            "condicoes": [
+                {
+                    "fato": "volante_pesado",
+                    "op": "==",
+                    "valor": true
+                },
+                {
+                    "fato": "zumbido_direcao",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Baixo nível de fluido de direção ou bomba hidráulica danificada",
+            "diagnostico_id": "fluido_direcao_ou_bomba",
+            "explicacao": "Volante pesado com zumbido indica falta de assistência hidráulica por baixo nível de fluido ou bomba com defeito.",
+            "causas": [
+                "Baixo nível de fluido de direção",
+                "Bomba hidráulica danificada"
+            ],
+            "recomendacoes": [
+                "Verificar o nível e vazamentos do fluido",
+                "Completar ou trocar o fluido",
+                "Testar a bomba da direção"
+            ],
+            "especialista": "Mecânico de suspensão e direção",
+            "cf": 0.85
+        },
+        {
+            "id": "R16",
+            "categoria": "suspensao_direcao",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Câmber negativo excessivo (necessário ajuste de cambagem)",
+            "condicoes": [
+                {
+                    "fato": "pneus_desgaste_interno",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Câmber negativo excessivo (necessário ajuste de cambagem)",
+            "diagnostico_id": "camber_negativo",
+            "explicacao": "Desgaste nas bordas internas dos pneus indica inclinação excessiva das rodas para dentro.",
+            "causas": [
+                "Câmber negativo excessivo"
+            ],
+            "recomendacoes": [
+                "Fazer ajuste de cambagem",
+                "Verificar componentes de suspensão avariados"
+            ],
+            "especialista": "Mecânico de suspensão e direção",
+            "cf": 0.8
+        },
+        {
+            "id": "R17",
+            "categoria": "arrefecimento_ar",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Interruptor térmico (\"cebolão\") queimado ou relé da ventoinha com defeito",
+            "condicoes": [
+                {
+                    "fato": "temperatura_vermelho",
+                    "op": "==",
+                    "valor": true
+                },
+                {
+                    "fato": "ventoinha_nao_liga",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Interruptor térmico (\"cebolão\") queimado ou relé da ventoinha com defeito",
+            "diagnostico_id": "cebolao_ou_rele",
+            "explicacao": "Superaquecimento com ventoinha parada indica que o acionamento elétrico da ventoinha não está funcionando.",
+            "causas": [
+                "Interruptor térmico (cebolão) queimado",
+                "Relé da ventoinha com defeito"
+            ],
+            "recomendacoes": [
+                "Desligar o motor para evitar danos",
+                "Testar o interruptor térmico e o relé",
+                "Substituir a peça defeituosa"
+            ],
+            "especialista": "Técnico de arrefecimento e ar-condicionado",
+            "cf": 0.85
+        },
+        {
+            "id": "R18",
+            "categoria": "arrefecimento_ar",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Mangueira do radiador ressecada/furada ou selo do motor vazando",
+            "condicoes": [
+                {
+                    "fato": "poca_liquido_colorido",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Mangueira do radiador ressecada/furada ou selo do motor vazando",
+            "diagnostico_id": "mangueira_ou_selo",
+            "explicacao": "Líquido de arrefecimento colorido no chão indica vazamento no circuito.",
+            "causas": [
+                "Mangueira do radiador ressecada ou furada",
+                "Selo do motor vazando"
+            ],
+            "recomendacoes": [
+                "Localizar o ponto de vazamento",
+                "Substituir a mangueira ou o selo",
+                "Completar o líquido de arrefecimento"
+            ],
+            "especialista": "Técnico de arrefecimento e ar-condicionado",
+            "cf": 0.8
+        },
+        {
+            "id": "R19",
+            "categoria": "arrefecimento_ar",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Vazamento de gás refrigerante no sistema",
+            "condicoes": [
+                {
+                    "fato": "ar_so_venta_nao_gela",
+                    "op": "==",
+                    "valor": true
+                },
+                {
+                    "fato": "compressor_arma_normal",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Vazamento de gás refrigerante no sistema",
+            "diagnostico_id": "vazamento_gas_ar",
+            "explicacao": "Com o compressor armando normalmente, a falta de resfriamento indica perda de gás refrigerante.",
+            "causas": [
+                "Vazamento de gás refrigerante"
+            ],
+            "recomendacoes": [
+                "Fazer teste de estanqueidade",
+                "Reparar o vazamento e recarregar o gás"
+            ],
+            "especialista": "Técnico de arrefecimento e ar-condicionado",
+            "cf": 0.85
+        },
+        {
+            "id": "R20",
+            "categoria": "arrefecimento_ar",
+            "tipo": "diagnostico",
+            "origem": "documento",
+            "nome": "Vazamento no radiador do ar quente interno (painel)",
+            "condicoes": [
+                {
+                    "fato": "cheiro_doce_cabine",
+                    "op": "==",
+                    "valor": true
+                },
+                {
+                    "fato": "tapete_umido_frente",
+                    "op": "==",
+                    "valor": true
+                }
+            ],
+            "diagnostico": "Vazamento no radiador do ar quente interno (painel)",
+            "diagnostico_id": "vazamento_radiador_interno",
+            "explicacao": "Cheiro doce e tapete úmido na frente indicam líquido de arrefecimento vazando dentro da cabine.",
+            "causas": [
+                "Vazamento no radiador do ar quente interno"
+            ],
+            "recomendacoes": [
+                "Verificar o radiador do aquecedor atrás do painel",
+                "Substituir o radiador interno"
+            ],
+            "especialista": "Técnico de arrefecimento e ar-condicionado",
+            "cf": 0.9
+        }
+    ]
+}
