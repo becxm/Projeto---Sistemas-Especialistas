@@ -44,5 +44,7 @@ def create_app(kb_path: Path = KB_PATH, db_path: Path = DB_PATH) -> Flask:
 
 
 if __name__ == "__main__":
+    import os
+    debug_mode = os.environ.get("FLASK_DEBUG", "0").lower() in ("1", "true")
     application = create_app()
-    application.run(debug=True, port=5000)
+    application.run(debug=debug_mode, port=5000)

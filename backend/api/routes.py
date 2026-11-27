@@ -136,10 +136,18 @@ def stats():
 
 @api_bp.get("/diagnostics/history")
 def history():
-    """Retorna o histórico paginado de diagnósticos com suporte a filtros."""
+    """Retorna o histórico paginado de diagnósticos com suporte a filtros e limites seguros."""
     db = current_app.config["DB"]
-    limit = request.args.get("limit", default=20, type=int)
-    offset = request.args.get("offset", default=0, type=int)
+    try:
+        limit = request.args.get("limit", default=20, type=int)
+        offset = request.args.get("offset", default=0, type=int)
+    except (ValueError, TypeError):
+        limit = 20
+        offset = 0
+
+    # Sanitização de parâmetros de paginação contra DoS / valores negativos
+    limit = max(1, min(limit, 100))
+    offset = max(0, offset)
     sistema = request.args.get("sistema", default=None, type=str)
     status = request.args.get("status", default=None, type=str)
 
@@ -152,14 +160,25 @@ def reload_knowledge_base():
     """
     Recarrega a base de conhecimento a partir de arquivo JSON ou CSV
     sem necessidade de reiniciar a aplicação Flask.
+    Protegido contra Directory Traversal (LFI).
     """
     payload = request.get_json(silent=True) or {}
     format_type = payload.get("formato", "json").lower()
     custom_path = payload.get("arquivo")
 
     base_dir = Path(current_app.root_path).parent
+    allowed_dirs = [
+        (base_dir / "knowledge_base").resolve(),
+        (base_dir / "data").resolve(),
+    ]
+
     if custom_path:
-        target_path = Path(custom_path)
+        target_path = (base_dir / custom_path).resolve()
+        is_safe = any(target_path.is_relative_to(d) for d in allowed_dirs)
+        if not is_safe:
+            return jsonify({
+                "erro": "Acesso negado: o arquivo deve estar dentro das pastas 'knowledge_base' ou 'data'."
+            }), 403
     elif format_type == "csv":
         target_path = base_dir / "knowledge_base" / "regras_oficina.csv"
     else:

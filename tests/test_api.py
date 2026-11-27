@@ -105,6 +105,21 @@ class TestAPIEndpoints(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertIn("recarregada com sucesso", resp.get_json()["mensagem"])
 
+    def test_reload_knowledge_base_path_traversal_blocked(self) -> None:
+        resp = self.client.post(
+            "/api/knowledge-base/reload",
+            json={"formato": "json", "arquivo": "../../../etc/passwd"}
+        )
+        self.assertEqual(resp.status_code, 403)
+        self.assertIn("Acesso negado", resp.get_json()["erro"])
+
+    def test_history_pagination_bounds(self) -> None:
+        resp = self.client.get("/api/diagnostics/history?limit=-10&offset=-5")
+        self.assertEqual(resp.status_code, 200)
+        data = resp.get_json()
+        self.assertEqual(data["limit"], 1)
+        self.assertEqual(data["offset"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()
