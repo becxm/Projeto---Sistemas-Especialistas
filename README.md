@@ -131,7 +131,7 @@ projeto-sistemas-especialistas/
 
 ### Detalhamento por Pasta
 
-#### `knowledge_base/` e `data/` — Engenharia de Conhecimento (**Responsável: Membro 2**)
+#### `knowledge_base/` e `data/` — Engenharia de Conhecimento (**Responsável: Rebeca**)
 - **Para que serve:** Armazena as regras (`SE [sintomas] ENTÃO [diagnóstico]`), catálogo de fatos e perguntas em arquivos externos (`.json` e `.csv`), permitindo atualizar o sistema sem alterar código Python.
 - **O que já existe:**
   - `knowledge_base/regras_oficina.json`: **26 regras de diagnóstico** cobrindo 9 subsistemas veiculares (Elétrica, Motor, Freios, Suspensão, Arrefecimento, Injeção, Transmissão, Escapamento e Turbo).
@@ -141,14 +141,14 @@ projeto-sistemas-especialistas/
   - Garantir que todas as regras possuam `sintomas`, `diagnostico`, `solucao`, `especialista` e `confianca` (de `0.0` a `1.0`).
   - Executar `python scripts/validar_base.py` antes de novos commits para assegurar ausência de sintomas órfãos ou IDs duplicados.
 
-#### `scripts/` — Utilitários e Ferramentas Operacionais
+#### `scripts/` — Utilitários e Ferramentas Operacionais (**Responsável: Rebeca / Equipe**)
 - **`validar_base.py`:** Auditor automatizado da consistência e integridade das bases JSON e CSV.
 - **`cli_triagem.py`:** Simulador completo de triagem e teste de hipóteses por linha de comando.
 - **`converter_kb.py`:** Utilitário de exportação e importação bidirecional JSON <-> CSV.
 - **`popular_historico.py` / `popular_demo.py`:** Geradores de massa de dados realista para alimentar o SQLite e o Dashboard.
 - **`gerar_docs_regras.py`:** Gerador automatizado do dicionário de regras em Markdown (`docs/regras.md`).
 
-#### `backend/engine/` — Motor de Inferência (**Responsável: Membro 1 + Membro 5**)
+#### `backend/engine/` — Motor de Inferência (**Responsável: Iasmim**)
 - **Para que serve:** Contém a inteligência do sistema especialista.
 - **Capacidades implementadas:**
   - **Encadeamento para Frente (Forward Chaining):** Avaliação de sintomas confirmados/negados com cálculo de cobertura e probabilidade ponderada.
@@ -156,26 +156,26 @@ projeto-sistemas-especialistas/
   - **Resolução de Conflitos e Desempate:** Ordenação por cobertura, probabilidade e confiança da regra.
   - **Filtro por Subsistema:** Capacidade de focar a triagem em um sistema mecânico específico.
 
-#### `backend/explanation/` — Módulo de Explicação e Exceções (**Responsável: Membro 3**)
+#### `backend/explanation/` — Módulo de Explicação e Exceções (**Responsável: Iasmim**)
 - **Para que serve:** Explica ao usuário **por que/como** o sistema chegou àquela conclusão e protege contra entradas inválidas.
 - **Capacidades implementadas:**
   - `validate_facts()`: Validação estrita de entradas com exceção customizada `InvalidInputError`.
   - `build_explanation()`: Painel detalhado de justificativa, listando sintomas confirmados, regras ativadas e fallback amigável para casos inconclusivos.
 
-#### `backend/loaders/` — Leitura e Escrita de JSON/CSV (**Responsável: Membro 5**)
+#### `backend/loaders/` — Leitura e Escrita de JSON/CSV (**Responsável: Rebeca / Silvana**)
 - **Para que serve:** Manipulação de arquivos externos da base de conhecimento.
 - **Capacidades implementadas:**
   - `load_from_json()` e `load_from_csv()`: Carga com validação rigorosa de campos obrigatórios.
   - `save_to_json()` e `save_to_csv()`: Exportação estruturada.
 
-#### `backend/database/` e `data/` — Histórico e Dados Estatísticos (**Responsável: Membro 1 + Membro 5**)
+#### `backend/database/` e `data/` — Histórico e Dados Estatísticos (**Responsável: Gustavo / Iasmim**)
 - **Para que serve:** Salva os diagnósticos em banco **SQLite** (`data/oficina.db`) e gera métricas analíticas.
 - **Capacidades implementadas:**
   - `log_diagnostic()`: Registro com timestamp, sintomas, probabilidade e status.
   - `get_stats()`: Métricas agregadas de taxa de resolutividade, distribuição por sistema e diagnósticos recentes.
   - `get_history()`: Consulta paginada com suporte a filtros dinâmicos por sistema e status.
 
-#### `backend/api/` e `backend/app.py` — API Web (**Responsável: Membro 1 + Membro 4**)
+#### `backend/api/`, `app.py` e `config.py` — Arquitetura e API Web (**Responsável: Gustavo / Iasmim**)
 - **Para que serve:** Conecta a interface gráfica ao motor de inferência, módulo de explicação e banco de dados.
 - **Endpoints disponíveis:**
   - `GET /api/health` — Status da API, total de regras e subsistemas mapeados.
@@ -188,24 +188,43 @@ projeto-sistemas-especialistas/
   - `GET /api/diagnostics/history` — Histórico paginado e filtrado de atendimentos.
   - `POST /api/knowledge-base/reload` — Recarga dinâmica de regras (JSON ou CSV) sem reiniciar a aplicação.
 
-#### `frontend/`, `templates/` e `static/` — Interface Web e UX (**Responsável: Membro 4**)
+#### `frontend/`, `templates/` e `static/` — Interface Web e UX (**Responsável: Sarah**)
 - Telas da oficina em tema moderno (Dark Mode), com suporte tanto a Single Page Application (`frontend/`) quanto a páginas completas Jinja2 (`templates/` e `static/`), com navegação por abas: Triagem, Resultado com "Por que / Como", Histórico com filtros, Dashboard e Dicionário de Conhecimento.
 
-#### `tests/` — Testes Automatizados (**Responsável: Membro 5 + Todos**)
+#### `tests/` e `docs/` — Testes Automatizados e Documentação (**Responsável: Silvana**)
 - **`test_engine.py`:** Testes unitários do motor (forward/backward chaining, filtros, CSV loader, banco SQLite).
 - **`test_api.py`:** Testes de integração de todos os endpoints REST da aplicação Flask.
+- **`docs/`:** Documentação detalhada da base de conhecimento e regras.
 
 ---
 
 ## 3. Divisão da Equipe e Regras de Git
 
-| Membro | Papel Principal | Pastas Principais |
+### Divisão de Apresentação (Fontes: Gemini)
+
+| Integrante | Tópico Principal | O Que Apresentar |
 | :--- | :--- | :--- |
-| **Membro 1 (Líder)** | Arquitetura, Integração e Revisão | `backend/app.py`, `backend/api/`, `backend/engine/`, `backend/database/` |
-| **Membro 2** | Engenharia de Conhecimento | `knowledge_base/`, `data/` |
-| **Membro 3** | Exceções e Módulo de Explicação | `backend/explanation/` |
-| **Membro 4** | Interface Web e UX | `frontend/`, `templates/`, `static/` |
-| **Membro 5** | Diferenciais, Qualidade e Docs | `backend/loaders/`, `scripts/`, `tests/`, `docs/`, `README.md` |
+| **Gustavo** | Introdução, problema de negócio e arquitetura | Contexto do sistema especialista para oficina mecânica, problema no balcão, visão geral da aplicação (`app.py`, `config.py`) e fluxo no Git. |
+| **Iasmim** | Motor de inferência e lógica principal | Como funciona o encadeamento para frente, triagem interativa, incerteza e estrutura do `backend/`. |
+| **Rebeca** | Base de conhecimento e dados | Regras e fatos em JSON (`data/`), como os sintomas viram diagnóstico e scripts de apoio/população (`scripts/`). |
+| **Sarah** | Interface e demonstração prática | Telas e interação pelo navegador (`templates/` e `static/`), mostrando uma triagem funcionando ao vivo. |
+| **Silvana** | Testes, documentação e limitações | Como os testes (`tests/`) validam o sistema, organização da documentação (`docs/`, `README.md`) e limitações/próximos passos. |
+
+#### Tópicos de Apresentação:
+- **Gustavo:** Introdução, problema de negócio e arquitetura
+  - *O que apresentar:* Contexto do sistema especialista para oficina mecânica, problema no balcão, visão geral da aplicação (`app.py`, `config.py`) e fluxo no Git.
+
+- **Iasmim:** Motor de inferência e lógica principal
+  - *O que apresentar:* Como funciona o encadeamento para frente, triagem interativa, incerteza e estrutura do `backend/`.
+
+- **Rebeca:** Base de conhecimento e dados
+  - *O que apresentar:* Regras e fatos em JSON (`data/`), como os sintomas viram diagnóstico e scripts de apoio/população (`scripts/`).
+
+- **Sarah:** Interface e demonstração prática
+  - *O que apresentar:* Telas e interação pelo navegador (`templates/` e `static/`), mostrando uma triagem funcionando ao vivo.
+
+- **Silvana:** Testes, documentação e limitações
+  - *O que apresentar:* Como os testes (`tests/`) validam o sistema, organização da documentação (`docs/`, `README.md`) e limitações/próximos passos.
 
 ### Boas Práticas no GitHub (Avaliado pelo Professor)
 1. **Commits pequenos, frequentes e semânticos:** O histórico comprova a evolução de cada módulo (padrão Conventional Commits: `feat`, `fix`, `test`, `docs`).
